@@ -33,7 +33,3 @@ selenium.repl> (map element-text links)
 ```clojure
 selenium.repl> (quit-driver)
 ```
-
-## Next steps
-Explore namespaces :)
-Base functionality is `selenium.core` and `selenium.elements`
