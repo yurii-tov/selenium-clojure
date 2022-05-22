@@ -7,7 +7,7 @@ Wrapper for Selenium Webdriver (Java), written in Clojure
 
 ### What you will need
 1. Clojure (of course:))
-2. Leiningen
+2. Leiningen or Clojure CLI
 3. Browser (Chrome, for example)
 4. Appropriate web driver (for example, [Chromedriver](https://chromedriver.chromium.org/), installed and configured)
 
@@ -18,9 +18,9 @@ Wrapper for Selenium Webdriver (Java), written in Clojure
 
 ```clojure
 ;; start-driver is a main entry point. It has a lot of options, see (doc start-driver)
-selenium.core> (start-driver {:browser :chrome
-                                :headless? true
-                                :url "https://wikipedia.org/wiki/Special:Random"})
+selenium.core> (start-driver {:browser :chrome ; also available :firefox and :phantomjs
+                              :headless? true
+                              :url "https://wikipedia.org/wiki/Special:Random"})
 ```
 ### Inspect links on a page
 ```clojure
