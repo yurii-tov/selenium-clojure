@@ -1,4 +1,4 @@
-(defproject selenium "0.1.0-SNAPSHOT"
+(defproject com.github.yurii-tov/selenium "0.1.0-SNAPSHOT"
   :description "Selenium Webdriver wrapper"
   :repositories [["jitpack" "https://jitpack.io"]]
   :dependencies [[org.clojure/clojure "1.10.0"]
