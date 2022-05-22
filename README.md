@@ -1,4 +1,4 @@
-# selenium
+# selenium-clojure
 
 ## What is it?
 Wrapper for Selenium Webdriver (Java), written in Clojure
