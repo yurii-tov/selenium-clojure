@@ -1,0 +1,4 @@
+{:deps
+ {org.clojure/clojure {:mvn/version "1.10.0"}
+  org.seleniumhq.selenium/selenium-java {:mvn/version "3.141.59"}
+  com.github.detro/ghostdriver {:mvn/version "2.1.0"}}
