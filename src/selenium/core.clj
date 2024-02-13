@@ -119,6 +119,13 @@
     driver))
 
 
+(defmacro with-driver
+  "Performing actions with one-off browser instance"
+  [config & body]
+  `(binding [~'*driver* (start-driver (assoc ~config :anonymous? true))]
+     (try ~@body (finally (quit-driver)))))
+
+
 ;; Chrome
 
 
