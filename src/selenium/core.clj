@@ -157,12 +157,6 @@
 ;; Firefox
 
 
-(defmethod make-driver-options :firefox
-  [_]
-  (doto (new FirefoxOptions)
-    (.setCapability "marionette" false)))
-
-
 (defmethod make-local-driver :firefox
   [_ firefox-options]
   (new FirefoxDriver firefox-options))
