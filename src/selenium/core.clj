@@ -100,8 +100,8 @@
   :url          ; [string]            optional url to navigate on start
   :remote-url   ; [string]            url of remote selenium server
   :args         ; [vector of strings] cli switches
-  :prefs        ; [map]               'preferences' experimental option
-  :capabilities ; [map]               common webdriver settings
+  :capabilities ; [map]               common Webdriver settings
+  :prefs        ; [map]               browser-specific, somewhat hacky settings
   :headless?    ; [boolean]           on/off headless mode
   :anonymous?   ; [boolean]           do not mutate global *driver* var
   :binary       ; [string]            path to browser executable"
@@ -144,8 +144,8 @@
     (when headless? (. chrome-options setHeadless headless?))
     (when (seq args)
       (. chrome-options addArguments args))
-    (when prefs
-      (. chrome-options setExperimentalOption "prefs" prefs))
+    (doseq [[k v] prefs]
+      (. chrome-options setExperimentalOption k v))
     chrome-options))
 
 
@@ -155,6 +155,14 @@
 
 
 ;; Firefox
+
+
+(defmethod make-driver-options :firefox
+  [{:keys [prefs]}]
+  (let [options (new FirefoxOptions)]
+    (doseq [[k v] prefs]
+      (.addPreference options k v))
+    options))
 
 
 (defmethod make-local-driver :firefox
