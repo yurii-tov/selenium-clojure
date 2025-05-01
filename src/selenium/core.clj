@@ -92,19 +92,19 @@
 
 
 (defn start-driver
-  "Start new webdriver session
-   Return: WebDriver instance
-   Args: hashmap
-   Recognized keys:
-   :browser      ; [keyword]           browser type
-   :url          ; [string]            optional url to navigate on start
-   :remote-url   ; [string]            url of remote selenium server
-   :args         ; [vector of strings] cli switches
-   :prefs        ; [map]               'preferences' experimental option
-   :capabilities ; [map]               common webdriver settings
-   :headless?    ; [boolean]           on/off headless mode
-   :anonymous?   ; [boolean]           do not mutate global *driver* var
-   :binary       ; [string]            path to browser executable"
+  "Starts new webdriver session
+  Returns: WebDriver instance
+  Args: hashmap
+  Recognized keys:
+  :browser      ; [keyword]           browser type
+  :url          ; [string]            optional url to navigate on start
+  :remote-url   ; [string]            url of remote selenium server
+  :args         ; [vector of strings] cli switches
+  :prefs        ; [map]               'preferences' experimental option
+  :capabilities ; [map]               common webdriver settings
+  :headless?    ; [boolean]           on/off headless mode
+  :anonymous?   ; [boolean]           do not mutate global *driver* var
+  :binary       ; [string]            path to browser executable"
   [{:keys [url anonymous? capabilities remote-url] :as options}]
   (let [driver-options (reduce (fn [o [k v]] (doto o (.setCapability k v)))
                                (make-driver-options options)
