@@ -48,10 +48,10 @@
 
 
 (defn config-driver!
-  "Configure given webdriver instance, store config for further re-definition
-   Recognized options:
-   :implicit-wait ; (implicit wait in seconds)
-   :window-size   ; vector of [width height]"
+  "Configures existing webdriver instance.
+  Recognized options:
+  :implicit-wait ; (implicit wait in seconds)
+  :window-size   ; vector of [width height]"
   [config]
   (let [default-config (or (@driver-config *driver*)
                            {:implicit-wait 3})
@@ -67,7 +67,7 @@
 
 (defmacro with-driver-config
   "Perform body with *driver* configured according to provider config, then restore previous settings
-   See config-driver!"
+   See `config-driver!`"
   [config & body]
   `(let [~'old-config ((deref driver-config) *driver*)]
      (config-driver! ~config)
@@ -75,16 +75,16 @@
           (finally (config-driver! ~'old-config)))))
 
 
-(defmulti make-driver-options :browser)
+(defmulti make-capabilities :browser)
 
 
-(defmethod make-driver-options :default
+(defmethod make-capabilities :default
   [_]
   (new DesiredCapabilities))
 
 
 (defmulti make-local-driver
-  (fn [options driver-options]
+  (fn [options capabilities]
     (options :browser)))
 
 
@@ -100,18 +100,15 @@
   :url          ; [string]            optional url to navigate on start
   :remote-url   ; [string]            url of remote selenium server
   :args         ; [vector of strings] cli switches
-  :capabilities ; [map]               common Webdriver settings
   :prefs        ; [map]               browser-specific, somewhat hacky settings
   :headless?    ; [boolean]           on/off headless mode
   :anonymous?   ; [boolean]           do not mutate global *driver* var
   :binary       ; [string]            path to browser executable"
-  [{:keys [url anonymous? capabilities remote-url] :as options}]
-  (let [driver-options (reduce (fn [o [k v]] (doto o (.setCapability k v)))
-                               (make-driver-options options)
-                               capabilities)
+  [{:keys [url anonymous? remote-url] :as options}]
+  (let [capabilities (make-capabilities options)
         driver (if remote-url
-                 (new RemoteWebDriver (new URL remote-url) driver-options)
-                 (make-local-driver options driver-options))]
+                 (new RemoteWebDriver (new URL remote-url) capabilities)
+                 (make-local-driver options capabilities))]
     (when-not anonymous? (set-driver! driver))
     (binding [*driver* driver]
       (config-driver! options))
@@ -129,7 +126,7 @@
 ;; Chrome
 
 
-(defmethod make-driver-options :chrome
+(defmethod make-capabilities :chrome
   [{:keys [args prefs headless? binary]
     :as options}]
   (let [chrome-options (new ChromeOptions)]
@@ -157,7 +154,7 @@
 ;; Firefox
 
 
-(defmethod make-driver-options :firefox
+(defmethod make-capabilities :firefox
   [{:keys [prefs]}]
   (let [options (new FirefoxOptions)]
     (doseq [[k v] prefs]
