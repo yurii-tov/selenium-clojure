@@ -96,17 +96,25 @@
   Returns: WebDriver instance
   Args: hashmap
   Recognized keys:
-  :browser      ; [keyword]           browser type
+  :browser      ; [keyword]           Browser type.
                                       Supported :chrome, :firefox, :phantomjs
-  :url          ; [string]            url to navigate on start
-  :remote-url   ; [string]            url of remote selenium server
-  :args         ; [vector of strings] cli switches
-  :prefs        ; [map]               browser-specific, somewhat hacky settings
-  :headless?    ; [boolean]           on/off headless mode
-  :anonymous?   ; [boolean]           do not mutate global *driver* var
-  :binary       ; [string]            path to browser executable"
-  [{:keys [url anonymous? remote-url] :as options}]
-  (let [capabilities (make-capabilities options)
+  :url          ; [string]            Url to navigate on start
+  :headless?    ; [boolean]           On/off headless mode
+  :remote-url   ; [string]            Url of remote selenium server
+  :capabilities ; [map or `org.openqa.selenium.Capabilities` object]
+                ; Generic configuration mechanism through so-called \"Capabilities\"
+  :prefs        ; [map]               Browser-specific, somewhat hacky settings
+  :args         ; [vector of strings] Browser cli switches
+  :binary       ; [string]            Path to browser executable
+  :anonymous?   ; [boolean]           Do not mutate global *driver* var"
+  [{:keys [url anonymous? remote-url capabilities] :as options}]
+  (let [capabilities (if (or (map? capabilities)
+                             (not capabilities))
+                       (reduce (fn [o [k v]] (doto o (.setCapability k v)))
+                               (make-capabilities options)
+                               capabilities)
+                       (.merge (make-capabilities options)
+                               capabilities))
         driver (if remote-url
                  (new RemoteWebDriver (new URL remote-url) capabilities)
                  (make-local-driver options capabilities))]
