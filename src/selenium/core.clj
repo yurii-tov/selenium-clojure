@@ -147,7 +147,8 @@
     ;; misc options
     (when binary
       (. chrome-options setBinary binary))
-    (when headless? (. chrome-options setHeadless headless?))
+    (when headless?
+      (. chrome-options addArguments ["--headless=new"]))
     (when (seq args)
       (. chrome-options addArguments args))
     (doseq [[k v] prefs]
