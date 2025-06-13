@@ -1,32 +1,16 @@
 (ns selenium.core
   (:import
-   (org.openqa.selenium.chrome
-    ChromeDriver
-    ChromeOptions)
-   (org.openqa.selenium.firefox
-    FirefoxOptions
-    FirefoxDriver)
-   org.openqa.selenium.phantomjs.PhantomJSDriver
-   (org.openqa.selenium
-    WebElement
-    By
-    OutputType
-    Dimension
-    StaleElementReferenceException)
-   (org.openqa.selenium.remote
-    RemoteWebDriver
-    DesiredCapabilities)
-   org.openqa.selenium.interactions.Actions
-   (org.openqa.selenium.support.ui
-    FluentWait
-    ExpectedCondition
-    ExpectedConditions)
-
-   (java.time LocalDate
-              Duration)
-   (java.time.format DateTimeFormatter)
-   java.util.concurrent.TimeUnit
-   java.net.URL)
+   [org.openqa.selenium.chrome ChromeDriver ChromeOptions]
+   [org.openqa.selenium.firefox FirefoxOptions FirefoxDriver]
+   [org.openqa.selenium.phantomjs PhantomJSDriver]
+   [org.openqa.selenium WebElement By OutputType Dimension StaleElementReferenceException]
+   [org.openqa.selenium.remote RemoteWebDriver DesiredCapabilities]
+   [org.openqa.selenium.interactions Actions]
+   [org.openqa.selenium.support.ui FluentWait ExpectedCondition ExpectedConditions]
+   [java.time LocalDate Duration]
+   [java.time.format DateTimeFormatter]
+   [java.util.concurrent TimeUnit]
+   [java.net URL])
   (:require [clojure.string :as cstr]
             [clojure.java.io :as io]
             [clojure.set :as cset]))
